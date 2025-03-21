@@ -13,7 +13,7 @@
               <span
                 class="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400"
               >
-                <SearchIcon />
+                <SearchIcon class="hover:cursor-pointer" @click="searchClient" />
               </span>
               <input
                 v-model="document"
@@ -64,7 +64,14 @@
           </div>
 
           <div class="flex items-center gap-5">
-            <Button @click="handleSubmit" size="sm" variant="primary" :endIcon="BoxIcon" :loading="loading" :disabled="loading">
+            <Button
+              @click="handleSubmit"
+              size="sm"
+              variant="primary"
+              :endIcon="BoxIcon"
+              :loading="loading"
+              :disabled="loading"
+            >
               Procesar Ingreso
             </Button>
           </div>
@@ -152,6 +159,8 @@ import Dropzone from '@/components/forms/FormElements/Dropzone.vue'
 import FileInput from '@/components/forms/FormElements/FileInput.vue'
 import CheckboxInput from '@/components/forms/FormElements/CheckboxInput.vue'
 
+import axios from 'axios'
+
 import SearchIcon from '@/icons/SearchIcon.vue'
 
 import Button from '@/components/ui/Button.vue'
@@ -160,11 +169,11 @@ import { BoxIcon } from '@/icons'
 const currentPageTitle = ref('Ingreso Boveda')
 
 const formData = reactive({
-  userId: "1b10a7fe-1173-4a37-86b4-95eeede83310",
-  CardCode: "",
-  CardName: "",
-  BPLName: "Casa Central",
-  sourceBPLName: "Sucursal Punto Fijo",
+  userId: '1b10a7fe-1173-4a37-86b4-95eeede83310',
+  CardCode: '',
+  CardName: '',
+  BPLName: 'Casa Central',
+  sourceBPLName: 'Sucursal Punto Fijo',
   destinationBPLName: null,
   sourceBankName: null,
   destinationBankName: null,
@@ -173,16 +182,16 @@ const formData = reactive({
   dueDate: new Date().toISOString(),
   documentDate: new Date().toISOString(),
   amount: 0,
-  OPId: "048722d3-3648-4b20-a6f8-882b109c3c6a",
-  CFWName: "Flujo de caja de actividades de operación",
-  details: "",
-  CurrCode: "USD",
-  AcctCode: "1210010201091",
-  monetaryAcctCode: "1101010201090",
-  move: "client",
+  OPId: '048722d3-3648-4b20-a6f8-882b109c3c6a',
+  CFWName: 'Flujo de caja de actividades de operación',
+  details: '',
+  CurrCode: 'USD',
+  AcctCode: '1210010201091',
+  monetaryAcctCode: '1101010201090',
+  move: 'client',
   rate: 67.63,
-  BranchOcrCode: "CC00001",
-  DepartmentOcrCode: null
+  BranchOcrCode: 'CC00001',
+  DepartmentOcrCode: null,
 })
 
 const document = ref('')
@@ -192,7 +201,7 @@ const error = ref(null)
 const handleSubmit = async () => {
   try {
     if (!document.value || !formData.amount || !formData.details) {
-      error.value = "Por favor complete todos los campos obligatorios"
+      error.value = 'Por favor complete todos los campos obligatorios'
       return
     }
 
@@ -207,26 +216,27 @@ const handleSubmit = async () => {
     formData.dueDate = new Date(formData.dueDate).toISOString()
     formData.documentDate = new Date(formData.documentDate).toISOString()
 
-    console.log("Enviando datos:", formData)
-
     // Aquí harías la petición con axios
     // const response = await axios.post('api/ingresos-boveda', formData)
     // console.log('Respuesta:', response.data)
-
-    // Simulamos una respuesta exitosa
-    setTimeout(() => {
-      loading.value = false
-      alert('Datos enviados con éxito')
-      document.value = ''
-      formData.CardName = ''
-      formData.amount = 0
-      formData.details = ''
-    }, 1000)
-
   } catch (err) {
-    console.error("Error al enviar datos:", err)
-    error.value = "Ha ocurrido un error al procesar la solicitud"
+    console.error('Error al enviar datos:', err)
+    error.value = 'Ha ocurrido un error al procesar la solicitud'
     loading.value = false
+  }
+}
+
+const searchClient = async () => {
+  if (document.value) {
+    document.value.toUpperCase()
+
+    const { data: client } = await axios.get(
+      `${import.meta.env.VITE_API_URL}/ocrd/client?id=${document.value}`,
+    )
+    if (client !== null) {
+      formData.CardName = client.CardName
+      formData.CardCode = client.CardCode
+    }
   }
 }
 
