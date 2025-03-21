@@ -6,17 +6,13 @@
         <ComponentCard title="Carga">
           <DefaultInputs />
         </ComponentCard>
-
-
       </div>
       <div class="space-y-6">
-
-       <ComponentCard title="Checkboxes">
+        <ComponentCard title="Checkboxes">
           <CheckboxInput />
         </ComponentCard>
 
         <ComponentCard title="Inputs Group"> <InputGroup /> </ComponentCard>
-
       </div>
     </div>
   </AdminLayout>

@@ -9,10 +9,15 @@ const router = createRouter({
     {
       path: '/',
       name: 'Ecommerce',
-      component: () => import('../views/Daka/Ingreso/Boveda.vue'),
+      component: () => import('../views/Daka/Ingreso/IngresoBoveda.vue'),
       meta: {
         title: 'eCommerce Dashboard',
       },
+    },
+    {
+      path: '/egreso-boveda',
+      name: 'Ecommerce1',
+      component: () => import('../views/Daka/Egreso/EgresoBoveda.vue'),
     },
     {
       path: '/calendar',
