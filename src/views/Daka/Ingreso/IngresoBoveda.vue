@@ -135,6 +135,7 @@
             />
           </div>
 
+
           <!-- Error Message -->
           <div v-if="error" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg">
             {{ error }}
@@ -162,7 +163,7 @@ import CheckboxInput from '@/components/forms/FormElements/CheckboxInput.vue'
 import axios from 'axios'
 
 import SearchIcon from '@/icons/SearchIcon.vue'
-
+import DakaIcon from '@/icons/DakaIcon.vue'
 import Button from '@/components/ui/Button.vue'
 import { BoxIcon } from '@/icons'
 
@@ -217,8 +218,8 @@ const handleSubmit = async () => {
     formData.documentDate = new Date(formData.documentDate).toISOString()
 
     // Aquí harías la petición con axios
-    // const response = await axios.post('api/ingresos-boveda', formData)
-    // console.log('Respuesta:', response.data)
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/document`, formData)
+    console.log('Respuesta:', response.data)
   } catch (err) {
     console.error('Error al enviar datos:', err)
     error.value = 'Ha ocurrido un error al procesar la solicitud'
