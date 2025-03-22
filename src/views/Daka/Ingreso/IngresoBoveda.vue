@@ -150,20 +150,11 @@
 import { reactive, ref, onMounted } from 'vue'
 import PageBreadcrumb from '@/components/common/PageBreadcrumb.vue'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
-import DefaultInputs from '@/components/forms/FormElements/DefaultInputs.vue'
 import ComponentCard from '@/components/common/ComponentCard.vue'
-import SelectInput from '@/components/forms/FormElements/SelectInput.vue'
-import InputState from '@/components/forms/FormElements/InputState.vue'
-import TextArea from '@/components/forms/FormElements/TextArea.vue'
-import InputGroup from '@/components/forms/FormElements/InputGroup.vue'
-import Dropzone from '@/components/forms/FormElements/Dropzone.vue'
-import FileInput from '@/components/forms/FormElements/FileInput.vue'
-import CheckboxInput from '@/components/forms/FormElements/CheckboxInput.vue'
 
 import axios from 'axios'
 
 import SearchIcon from '@/icons/SearchIcon.vue'
-import DakaIcon from '@/icons/DakaIcon.vue'
 import Button from '@/components/ui/Button.vue'
 import { BoxIcon } from '@/icons'
 
@@ -194,6 +185,12 @@ const formData = reactive({
   BranchOcrCode: 'CC00001',
   DepartmentOcrCode: null,
 })
+
+onMounted(async () => {
+  const response = await axios.get(`${import.meta.env.VITE_API_URL}/currency`)
+  console.log(response)
+} )
+
 
 const document = ref('')
 const loading = ref(false)
